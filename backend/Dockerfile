@@ -1,5 +1,5 @@
 # Dockerfile for Render.com web service
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY . .
 
 # run requested commands
 RUN npx medusa build
-RUN cd .medusa/server && npm install
+RUN cd .medusa/server && npm install && npm run predeploy
 
 ENV NODE_ENV=production
 ENV PORT=9000
