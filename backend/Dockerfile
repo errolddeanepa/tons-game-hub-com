@@ -11,12 +11,12 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 
 # run requested commands
-RUN npx medusa build
+#RUN npx medusa build
 RUN cd .medusa/server && npm install
 
 ENV NODE_ENV=production
 ENV PORT=9000
 
 EXPOSE 9000
-RUN npm run predeploy
+RUN cd .medusa/server && npm run predeploy
 CMD ["npm", "run", "start"]
