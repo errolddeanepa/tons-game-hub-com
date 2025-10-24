@@ -1,21 +1,22 @@
-# Multi-stage Dockerfile to install, run predeploy, and start the Medusa server
-#FROM node:20-slim
-#WORKDIR /.medusa/server
+# Dockerfile for Render.com web service
+FROM node:18-alpine
 
-# Install dependencies (use package-lock if present)
-# COPY .medusa/server/package*.json ./
-#RUN npm install
+WORKDIR /app
 
-# Copy source, run predeploy (build step)
-#COPY ./.medusa/server ./
-#RUN npm run predeploy
+# install project dependencies (cache-friendly)
+COPY package*.json ./
+RUN npm ci --no-audit --no-fund
 
+# copy source
+COPY . .
 
-#ENV NODE_ENV=production
-#ENV PORT=9000
-# RUN npm prune --production || true
+# run requested commands
+RUN npx medusa build
+RUN cd .medusa/server && npm install
 
-#EXPOSE 9000
-# USER node
+ENV NODE_ENV=production
+ENV PORT=9000
 
-#CMD ["npm", "run", "start"]
+EXPOSE 9000
+
+CMD ["npm", "run", "start"]
