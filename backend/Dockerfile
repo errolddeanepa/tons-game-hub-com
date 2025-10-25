@@ -1,23 +1,29 @@
 # Dockerfile for Render.com web service
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /app/backend
 
-# install project dependencies (cache-friendly)
-#COPY package*.json ./
-#RUN npm ci --no-audit --no-fund
+# Install project dependencies (cache-friendly)
+COPY package*.json ./
+RUN npm install
 
-# copy source
-#COPY . .
+# Copy source code
+COPY . .
 
-# run requested commands
-#RUN npx medusa build
-RUN cd .medusa/server && npm install
+# Build Medusa production bundle
+RUN npx medusa build
+
+# Install dependencies in the build output directory
+WORKDIR /app/backend/.medusa/server
+RUN npm install
+
+# Run migrations before starting the server
+RUN npm run predeploy
 
 ENV NODE_ENV=production
 ENV PORT=9000
 
 EXPOSE 9000
-RUN cd .medusa/server && npm run predeploy
-RUN cd.medusa/server
+
+# Start the Medusa server in production mode
 CMD ["npm", "run", "start"]
