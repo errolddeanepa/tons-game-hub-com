@@ -1,7 +1,7 @@
 # Dockerfile for Render.com web service
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /backend
 # Install project dependencies (cache-friendly)
 COPY package*.json ./
 RUN npm install
@@ -13,7 +13,7 @@ COPY . .
 RUN npx medusa build
 
 # Install dependencies in the build output directory
-WORKDIR /app/.medusa/server
+WORKDIR /backend/.medusa/server
 RUN npm install
 
 # Run migrations before starting the server
