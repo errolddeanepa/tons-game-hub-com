@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("@medusajs/framework/utils");
-(0, utils_1.loadEnv)(process.env.NODE_ENV || 'development', process.cwd());
+(0, utils_1.loadEnv,utils_1.Modules)(process.env.NODE_ENV || 'development', process.cwd());
 module.exports = (0, utils_1.defineConfig)({
     projectConfig: {
         workerMode: process.env.MEDUSA_WORKER_MODE,
