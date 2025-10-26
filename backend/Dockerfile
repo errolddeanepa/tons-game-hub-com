@@ -12,12 +12,11 @@ COPY . .
 # Build Medusa production bundle
 RUN npx medusa build
 
-# Install dependencies in the build output directory
-WORKDIR /app/.medusa/server
-RUN npm install
+# Install dependencies in the build output directory & Run migrations before starting the server
+RUN cd .medusa/server 
+RUN npm install && npm run predeploy
 
-# Run migrations before starting the server
-RUN npm run predeploy
+RUN cd .medusa/server 
 
 # Start the Medusa server in production mode
 CMD ["npm", "run", "start"]
