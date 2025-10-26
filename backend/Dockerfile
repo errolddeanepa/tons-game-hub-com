@@ -19,10 +19,5 @@ RUN npm install
 # Run migrations before starting the server
 RUN npm run predeploy
 
-ENV NODE_ENV=production
-ENV PORT=9001
-
-EXPOSE 9001
-
 # Start the Medusa server in production mode
 CMD ["npm", "run", "start"]
